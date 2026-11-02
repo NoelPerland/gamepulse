@@ -69,6 +69,19 @@ try {
   await page.goto(base);
   await page.getByText("Live stream", { exact: true }).waitFor();
   await page.getByRole("heading", { name: "Activity over time" }).waitFor();
+  const chartData = await (await fetch(base + "/api/summary?days=7")).json();
+  await page.getByLabel("Chart measure").selectOption("deaths");
+  assert.equal(
+    await page.locator(".chart-reading strong").innerText(),
+    chartData.series.at(-1).deaths.toLocaleString(),
+  );
+  await page.getByLabel("Inspect chart date").focus();
+  await page.keyboard.press("Home");
+  assert.equal(
+    await page.locator(".chart-reading strong").innerText(),
+    chartData.series[0].deaths.toLocaleString(),
+  );
+  await page.getByLabel("Chart measure").selectOption("events");
   const start = await page.locator(".metrics strong").nth(1).innerText();
   if (process.env.QA_OUTPUT) {
     await mkdir(process.env.QA_OUTPUT, { recursive: true });
@@ -160,6 +173,29 @@ try {
       fullPage: true,
     });
   assert.deepEqual(errors, []);
+  for (const [width, height] of [
+    [1920, 1080],
+    [1366, 768],
+    [390, 844],
+    [360, 640],
+    [844, 390],
+  ]) {
+    await page.setViewportSize({ width, height });
+    assert(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= innerWidth,
+      ),
+      `Overflow at ${width}`,
+    );
+  }
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  assert.equal(
+    await page
+      .locator(".funnel > div")
+      .first()
+      .evaluate((el) => getComputedStyle(el).transitionDuration),
+    "0s",
+  );
   console.log(
     "PASS production browser, live ingestion, WebSocket reconnect, event explorer, operator config publish, phone layout.",
   );

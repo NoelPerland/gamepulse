@@ -44,6 +44,16 @@ const dateLabel = (v: string) =>
 function Chart({ series }: { series: Day[] }) {
   const [i, pick] = useState<number | null>(null),
     [metric, set] = useState<"events" | "players" | "deaths">("events");
+  if (!series.length) {
+    return (
+      <section className="graph">
+        <h2>Activity over time</h2>
+        <p className="footnote">
+          No daily series is available for this period.
+        </p>
+      </section>
+    );
+  }
   const max = Math.max(1, ...series.map((d) => d[metric])),
     x = (n: number) => 38 + (n * 624) / Math.max(series.length - 1, 1),
     y = (v: number) => 177 - (v * 137) / max;
@@ -51,7 +61,7 @@ function Chart({ series }: { series: Day[] }) {
     idx = Math.min(i ?? series.length - 1, series.length - 1),
     data = series[idx];
   return (
-    <section className="graph">
+    <section className="graph" data-measure={metric}>
       <div className="sectiontop">
         <div>
           <small>01 / VOLUME</small>
@@ -66,6 +76,19 @@ function Chart({ series }: { series: Day[] }) {
           <option value="players">Players</option>
           <option value="deaths">Deaths</option>
         </select>
+      </div>
+      <div className="chart-reading" aria-live="polite">
+        <strong>{fmt(data?.[metric] ?? 0)}</strong>
+        <span>
+          {metric}
+          <br />
+          <b>{data && dateLabel(data.day)} · UTC day</b>
+        </span>
+        <span className="chart-instruction">
+          Inspect a day on the chart
+          <br />
+          or use the date slider below
+        </span>
       </div>
       <svg
         viewBox="0 0 690 215"
@@ -93,6 +116,17 @@ function Chart({ series }: { series: Day[] }) {
             </text>
           </g>
         ))}
+        {series.map((day, n) => (
+          <line
+            key={day.day}
+            className={n === idx ? "daily-volume selected" : "daily-volume"}
+            x1={x(n)}
+            x2={x(n)}
+            y1={y(day[metric])}
+            y2="177"
+            strokeWidth={Math.min(18, 320 / series.length)}
+          />
+        ))}
         <polygon
           points={"38,177 " + points + " 662,177"}
           fill="#b7ceb5"
@@ -101,7 +135,7 @@ function Chart({ series }: { series: Day[] }) {
         <polyline
           points={points}
           fill="none"
-          stroke="#b9d4b4"
+          className="chart-line"
           strokeWidth="3"
           strokeLinejoin="round"
         />
@@ -283,7 +317,15 @@ export default function Dashboard() {
     <main>
       <header>
         <a className="brand" href="/">
-          ▥ <strong>GamePulse</strong>
+          <svg className="brand-mark" viewBox="0 0 28 28" aria-hidden="true">
+            <path
+              d="M2 22V14H7V20H12V5H17V17H22V10H26"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            />
+          </svg>
+          <strong>GamePulse</strong>
         </a>
         <span className="separator">/</span>
         <span>Mission control</span>
@@ -417,7 +459,15 @@ export default function Dashboard() {
                       <span>
                         {["Session start", "Enter a level", "Clear a level"][i]}
                       </span>
-                      <b>{fmt(v)}</b>
+                      <b>
+                        {fmt(v)}{" "}
+                        <em>
+                          {Math.round(
+                            (100 * v) / Math.max(1, stats.funnel.started),
+                          )}
+                          %
+                        </em>
+                      </b>
                       <div
                         style={{
                           width:

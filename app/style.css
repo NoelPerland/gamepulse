@@ -415,3 +415,203 @@ td {
     font-size: 21px;
   }
 }
+/* Telemetry instruments use the same measured signal across chart and controls. */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+.brand-mark {
+  width: 27px;
+  height: 27px;
+  flex: none;
+}
+header {
+  box-shadow: 0 1px 0 #0d1113;
+}
+.signal:before {
+  box-shadow: 0 0 0 4px #c79c6912;
+  transition:
+    background 0.25s,
+    box-shadow 0.25s;
+}
+.signal.on:before {
+  box-shadow: 0 0 0 4px #b4ce9d12;
+}
+nav button {
+  border-radius: 3px;
+  transition:
+    background 0.16s,
+    color 0.16s;
+  position: relative;
+}
+nav button[aria-current="page"]:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 11px;
+  bottom: 11px;
+  width: 2px;
+  background: #c7d9bd;
+}
+.metrics > div + div {
+  border-left: 1px solid #30383a;
+  padding-left: 22px;
+}
+.metrics label {
+  font-family: ui-monospace, monospace;
+  font-size: 10px;
+  letter-spacing: 0.3px;
+}
+.metrics strong {
+  font-weight: 450;
+}
+.graph {
+  --signal: #b9d4b4;
+  border-radius: 3px;
+  border-top: 2px solid #778d79;
+  background: #191e21;
+}
+.graph[data-measure="deaths"] {
+  --signal: #d2ac83;
+}
+.graph[data-measure="players"] {
+  --signal: #98bac9;
+}
+.chart-line {
+  stroke: var(--signal);
+  vector-effect: non-scaling-stroke;
+}
+.daily-volume {
+  stroke: var(--signal);
+  opacity: 0.08;
+}
+.daily-volume.selected {
+  opacity: 0.22;
+}
+.graph circle {
+  fill: var(--signal);
+}
+.chart-reading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 0 4px;
+}
+.chart-reading > strong {
+  font-size: 36px;
+  font-weight: 450;
+  letter-spacing: -1.5px;
+  font-variant-numeric: tabular-nums;
+  color: var(--signal);
+}
+.chart-reading > span {
+  font-size: 12px;
+  line-height: 1.6;
+  color: #d0d7d4;
+}
+.chart-reading b {
+  font-size: 10px;
+  font-weight: 400;
+  color: #8f9e9a;
+  font-family: ui-monospace, monospace;
+}
+.chart-reading .chart-instruction {
+  margin-left: auto;
+  text-align: right;
+  font-size: 10px;
+  color: #8f9e9a;
+}
+.funnel {
+  padding: 12px 0 14px;
+  margin-bottom: 6px;
+}
+.funnel:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background: #30393b;
+}
+.funnel > div {
+  transition: width 0.35s ease;
+}
+.funnel b {
+  font-weight: 550;
+  font-variant-numeric: tabular-nums;
+}
+.funnel em {
+  font-style: normal;
+  font-size: 10px;
+  font-weight: 400;
+  color: #94a19c;
+  margin-left: 9px;
+}
+.bottom {
+  gap: 42px;
+}
+.bottom > div {
+  border-top: 1px solid #404a4c;
+  padding-top: 20px;
+}
+tbody tr {
+  transition: background 0.15s;
+}
+tbody tr:hover {
+  background: #222b2c;
+}
+button,
+input,
+select {
+  transition:
+    border-color 0.15s,
+    background 0.15s;
+}
+button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+@media (max-width: 650px) {
+  .metrics > div + div {
+    padding-left: 16px;
+  }
+  .metrics > div:nth-child(3) {
+    border-left: 0;
+    padding-left: 5px;
+  }
+  .metrics > div:nth-child(n + 3) {
+    border-top: 1px solid #30383a;
+  }
+  .chart-reading > strong {
+    font-size: 30px;
+  }
+  .chart-reading .chart-instruction {
+    display: none;
+  }
+  .graph svg {
+    min-height: 170px;
+  }
+  .graph text {
+    font-size: 17px;
+  }
+  .brand-mark {
+    width: 23px;
+    height: 23px;
+  }
+  .bottom {
+    gap: 28px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *:before,
+  *:after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+  button:active:not(:disabled) {
+    transform: none;
+  }
+}
