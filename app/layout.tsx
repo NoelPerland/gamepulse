@@ -1,3 +1,4 @@
+import ProductIntro from "./product-intro";
 import type { ReactNode } from "react";
 import "./style.css";
 export const metadata = {
@@ -7,7 +8,7 @@ export const metadata = {
 export default function Layout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body><ProductIntro /><div id="workspace">{children}</div></body>
     </html>
   );
 }
