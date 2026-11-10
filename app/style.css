@@ -9,11 +9,8 @@ body {
   background: #15191c;
   color: #e6e9e8;
   font-family:
-    Inter,
-    ui-sans-serif,
-    -apple-system,
-    BlinkMacSystemFont,
     "Segoe UI",
+    system-ui,
     sans-serif;
   font-size: 14px;
 }
