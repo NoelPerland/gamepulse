@@ -1,16 +1,15 @@
 export default function ProductIntro() {
   return (
     <section className="product-intro" aria-label="About GamePulse">
-      <h1>Understand the play. Improve the game.</h1>
+      <h1>Where did the run end?</h1>
       <p className="intro-description">
-        Inspect sessions, deaths, progression and next-day returns from game events.
+        Follow session starts, deaths and level clears. Filter by day to find where players got stuck.
       </p>
       <a className="intro-action" href="#workspace">
-        Explore the analytics demo ↗
+        Open the console ↗
       </a>
       <p className="intro-note">
-        The demo uses fictional sessions. Real ingestion and configuration
-        changes require your developer keys.
+        Sample sessions are synthetic. Live ingestion and configuration need developer keys.
       </p>
     </section>
   );
