@@ -327,7 +327,7 @@ td {
 }
 .error {
   padding: 12px;
-  border-left: 3px solid #e5ab8d;
+  border: 1px solid #e5ab8d;
   background: #302522;
   margin: 12px 0;
 }
@@ -614,7 +614,7 @@ button:active:not(:disabled) {
 }
 
 .product-intro {
-  padding: 40px max(24px, calc((100vw - 1100px) / 2));
+  padding: 30px max(24px, calc((100vw - 1100px) / 2)) 24px;
   border-bottom: 1px solid #88958b;
   max-width: none;
 }
@@ -624,17 +624,17 @@ button:active:not(:disabled) {
   margin: 0 0 65px;
 }
 .product-intro h1 {
-  font-size: clamp(38px, 6vw, 76px);
+  font-size: clamp(36px, 4.5vw, 60px);
   line-height: 1.08;
   letter-spacing: -0.04em;
   max-width: 950px;
-  margin: 0 0 25px;
+  margin: 0 0 16px;
 }
 .product-intro .intro-description {
   font-size: 19px;
   line-height: 1.6;
   max-width: 650px;
-  margin-bottom: 28px;
+  margin-bottom: 18px;
 }
 .product-intro .intro-action {
   display: inline-block;
@@ -649,7 +649,7 @@ button:active:not(:disabled) {
   line-height: 1.6;
   max-width: 650px;
   opacity: 0.8;
-  margin: 15px 0 42px;
+  margin: 15px 0 0;
 }
 .product-intro ol {
   display: grid;
