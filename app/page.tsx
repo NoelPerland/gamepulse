@@ -34,6 +34,7 @@ const kinds = [
   "level_complete",
   "session_end",
 ];
+const hostedDemo = Boolean(process.env.NEXT_PUBLIC_VERCEL_ENV);
 const fmt = (n: number) => n.toLocaleString();
 const dateLabel = (v: string) =>
   new Date(v + "T12:00:00Z").toLocaleDateString("en-GB", {
@@ -270,6 +271,7 @@ export default function Dashboard() {
     if (tab === "Remote config") void configLoad();
   }, [tab, configLoad]);
   useEffect(() => {
+    if (hostedDemo) return;
     let stop = false,
       timer: ReturnType<typeof setTimeout>,
       refresh: ReturnType<typeof setTimeout> | undefined,
@@ -329,8 +331,8 @@ export default function Dashboard() {
         </a>
         <span className="separator">/</span>
         <span>Mission control</span>
-        <span className={"signal " + (live ? "on" : "")}>
-          {live ? "Live stream" : "Connecting"}
+        <span className={"signal " + (live || hostedDemo ? "on" : "")}>
+          {hostedDemo ? "Read-only demo" : live ? "Live stream" : "Connecting"}
         </span>
       </header>
       <div className="shell">
@@ -339,7 +341,7 @@ export default function Dashboard() {
           <strong>Flight Recorder</strong>
           <p className="label second">CONSOLE</p>
           <nav>
-            {["Overview", "Explorer", "Remote config"].map((name, i) => (
+            {(hostedDemo ? ["Overview", "Explorer"] : ["Overview", "Explorer", "Remote config"]).map((name, i) => (
               <button
                 key={name}
                 aria-current={name === tab ? "page" : undefined}
@@ -371,7 +373,7 @@ export default function Dashboard() {
               </h1>
               <p>
                 {tab === "Overview"
-                  ? "A live read on sessions, progression and friction."
+                  ? hostedDemo ? "Explore sample sessions, progression and friction." : "A live read on sessions, progression and friction."
                   : tab === "Explorer"
                     ? "Inspect the events behind each signal."
                     : "Publish game tuning values without a client release."}

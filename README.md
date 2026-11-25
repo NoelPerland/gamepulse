@@ -47,6 +47,8 @@ An embedded player write key can be extracted. A publicly distributed game shoul
 
 After building, run `npm run test:browser`. Set `CHROME_PATH` to an installed Chromium executable if needed. The test starts its own isolated production server and verifies real ingestion updates the visible metrics, filtered explorer rows, WebSocket reconnect, operator configuration publishing and phone layout. Set `QA_OUTPUT` for screenshots. API and database requests in this regression are real.
 
-## Deployment boundary
+## Hosted preview
 
-This is a functional single-game implementation. Provision a persistent Node host, PostgreSQL backups, TLS, rate limits and operational monitoring before public production use. Per-game tenant isolation, account identity, key rotation UI and a durable client event queue are outside this slice. Seeded demo history is explicitly fictional. No hosted production deployment is claimed.
+The Vercel build serves a read-only demo from Next.js route handlers. It reuses the existing synthetic flight sessions in an in-memory PostgreSQL-compatible store, so visitors can inspect metrics, chart dates and filtered events without an account. The preview labels its data as synthetic and hides ingestion and remote configuration. Vercel provides `NEXT_PUBLIC_VERCEL_ENV` at build time; a normal local build continues to use the full Node server.
+
+The hosted preview does not persist visitor changes, accept event writes or open the WebSocket stream. For a live multi-user installation, provision a persistent Node host, PostgreSQL backups, TLS, rate limits and operational monitoring. Per-game tenant isolation, account identity, key rotation UI and a durable client event queue are outside this slice. The local Node build retains authenticated ingestion, WebSocket updates and versioned remote configuration.

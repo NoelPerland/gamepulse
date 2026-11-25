@@ -9,7 +9,9 @@ export default function ProductIntro() {
         Open the console ↗
       </a>
       <p className="intro-note">
-        Sample sessions are synthetic. Live ingestion and configuration need developer keys.
+        {process.env.NEXT_PUBLIC_VERCEL_ENV
+          ? "Synthetic sessions. This hosted preview is read-only; source includes authenticated ingestion and remote configuration."
+          : "Sample sessions are synthetic. Live ingestion and configuration need developer keys."}
       </p>
     </section>
   );
